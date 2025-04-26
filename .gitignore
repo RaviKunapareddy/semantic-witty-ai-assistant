@@ -1,4 +1,37 @@
-# Python ignore
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
 *.ipynb_checkpoints
+
+# macOS
 .DS_Store
+
+# Virtual environments
+chatbot/
+venv/
+.env/
+
+# Environment/secret files
+.env
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VSCode/IDE
+.vscode/
+.idea/
+
+# Logs and temp
+*.log
+*.tmp
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Ignore large binary data unless needed (uncomment to exclude vector store)
+# utils/vector_store.pkl

@@ -1,50 +1,36 @@
 import json
 import pickle
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformers
 import os
-from tqdm import tqdm
 
-# --- Config ---
-DATA_PATH = os.path.join("data", "responses.json")
-SAVE_PATH = os.path.join("utils", "vector_store.pkl")
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+# Paths
+RESPONSES_PATH = os.path.join(os.path.dirname(__file__), '../data/responses.json')
+VECTOR_STORE_PATH = os.path.join(os.path.dirname(__file__), '../utils/vector_store.pkl')
 
-# --- Load Response Data ---
-def load_responses(path):
-    with open(path, 'r') as f:
-        return json.load(f)
+# Load responses
+def load_responses():
+    with open(RESPONSES_PATH, 'r', encoding='utf-8') as f:
+        responses = json.load(f)
+    return responses
 
-# --- Embed Prompts ---
-def build_embeddings(responses, model):
+# Build embeddings
+def build_vector_store(responses, model_name='all-MiniLM-L6-v2'):
+    model = SentenceTransformer(model_name)
     prompts = [item['prompt'] for item in responses]
     embeddings = model.encode(prompts, show_progress_bar=True)
-    vector_store = [
-        {"embedding": emb.tolist(), "response": responses[i]["response"]}
-        for i, emb in enumerate(embeddings)
-    ]
-    return vector_store
+    return {
+        'prompts': prompts,
+        'responses': [item['response'] for item in responses],
+        'embeddings': embeddings
+    }
 
-# --- Save Vector Store ---
-def save_vector_store(vector_store, path):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, 'wb') as f:
+# Save vector store
+def save_vector_store(vector_store):
+    with open(VECTOR_STORE_PATH, 'wb') as f:
         pickle.dump(vector_store, f)
 
-# --- Main Execution ---
-def main():
-    print("\n[1] Loading responses...")
-    responses = load_responses(DATA_PATH)
-
-    print("[2] Initializing embedding model...")
-    model = SentenceTransformer(EMBEDDING_MODEL)
-
-    print("[3] Encoding prompts into vectors...")
-    vector_store = build_embeddings(responses, model)
-
-    print("[4] Saving vector store to disk...")
-    save_vector_store(vector_store, SAVE_PATH)
-
-    print("\n✅ Vector store created successfully at:", SAVE_PATH)
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    responses = load_responses()
+    vector_store = build_vector_store(responses)
+    save_vector_store(vector_store)
+    print(f"Vector store built and saved to {VECTOR_STORE_PATH}")

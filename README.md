@@ -1,116 +1,179 @@
-# 🤖 Semantic Witty AI Assistant
 
-A conversational AI chatbot with *personality*. This assistant doesn’t rely on fixed intent categories or rigid rules. Instead, it uses **sentence embeddings** and **semantic similarity** to understand what you mean — not just what you say.
+# 🤖 Semantic Witty AI Assistant: Meaning over Matching
 
-After building a basic intent classifier using Bag-of-Words and TensorFlow, I wanted to go deeper: 
-What if we could match user inputs based on *meaning*, not just keywords?
+In a world of rigid bots and keyword-matching chatbots, the Semantic Witty AI Assistant brings a refreshing twist.  
+It’s not just another chatbot — it’s an **attitude-powered, meaning-driven conversational experience**.
 
-This project is the answer. It’s the second step in my NLP journey — a smarter, more flexible, and a whole lot funnier assistant.
-
----
-
-## 🎯 Why I Built This
-
-Too often, classic NLP bots feel stiff. You say "Tell me a joke", and it matches a tag. Say "Got anything funny?" and... nothing.
-
-I wanted:
-- A chatbot that **understands variations** in how people speak
-- A system that doesn't need to be re-trained every time we add new examples
-- A **fun, sassy, sarcastic** assistant that feels more like a clever friend than a machine
-
-And that’s exactly what this is. 💬
+Built on **semantic retrieval**, this assistant understands *what you mean* — not just *what you type*.  
+It supports both **text** and **voice** interactions, streams responses for realism, and even asks you for feedback — with plenty of sass along the way.
 
 ---
 
-## 🧠 How It Works
+## 🎯 Why This Project?
 
-```text
-User Input → Embedding (SentenceTransformer)
-           → Cosine Similarity against Pre-Embedded Prompts
-           → Closest Match → Pre-written Witty Response 🔥
+Traditional bots break when you change how you ask things.  
+"Tell me a joke" works, but "Got anything funny?"? — *Silence.*
+
+This project is about:
+- **Flexibility** — matching user intent *semantically* using vector embeddings
+- **Fun** — delivering witty, sarcastic, philosophical, or motivational replies
+- **Feedback-driven improvement** — users can rate how witty the bot is
+- **Voice interactivity** — beyond typing, you can talk to it
+
+All designed with a modular structure for easy growth.
+
+---
+
+## 🛠️ How It Works
+
+When you interact with the assistant:
+
+1. **Input Embedding**  
+   → Your text or voice input is embedded using Sentence Transformers.
+
+2. **Semantic Retrieval**  
+   → It searches a pre-built vector store of witty, sarcastic, and motivational responses.
+
+3. **Response Selection**  
+   → The most semantically similar response is selected and streamed back.
+
+4. **Feedback Logging**  
+   → After each conversation turn, you're asked to rate the wit (for future improvement).
+
+### 🔥 Flow Summary:
+
+```
+User Input (Text/Voice) 
+    → Embedding (Sentence Transformers) 
+    → Semantic Search (Vector Store)
+    → Selected Response
+    → Streamed Back to User
+    → Feedback Captured (Optional)
 ```
 
-### 🧬 Core Components
-- `responses.json` → 500+ prompts + witty responses
-- `SentenceTransformer` → Transforms input + prompts into embeddings
-- `vector_store.pkl` → Stores precomputed embeddings for fast retrieval
-- Cosine similarity → Finds the most semantically relevant response
+---
+
+## 🧬 Core Components
+
+| File | Role |
+|:-----|:-----|
+| `app/text_chatbot.py` | Launch the text-based chat interface |
+| `app/voice_chatbot.py` | Launch the voice-based chat interface |
+| `utils/chat_core.py` | Core chat logic (embedding, retrieval, response streaming) |
+| `utils/streaming.py` | Handles streamed responses |
+| `utils/feedback.py` | Captures and stores user feedback in CSV |
+| `model/build_vector_store.py` | Builds the semantic vector store from witty responses |
+| `utils/vector_store.pkl` | Precomputed embeddings and stored witty prompts |
+| `data/responses.json` | 500+ witty, funny, motivational, and philosophical responses |
+| `feedback/feedback_log.csv` | Logs user feedback ratings for analysis |
 
 ---
 
-## 📂 Project Structure
+## ✨ Key Features
+
+- **Semantic Understanding**: Goes beyond keywords using real meaning matching.
+- **Text & Voice Interfaces**: Talk to it or type to it — it sasses you either way.
+- **Streaming Responses**: Feel like you're chatting with a real person.
+- **Feedback Loop**: Log and analyze how witty or satisfying the bot’s replies are.
+- **Modular & Extensible**: Easily add new datasets, modalities, or skills.
+
+---
+
+## 📸 Sample Outputs
+
+- **Text Chatbot Interaction:**
+
+  <img src="./assets/text_bot.png" alt="Text Chatbot Output" width="600" />
+
+- **Voice Chatbot Interaction:**
+
+  <img src="./assets/voice_bot.png" alt="Voice Chatbot Output" width="600" />
+
+---
+
+## 📦 Project Structure
 
 ```bash
-semantic-intent-chatbot-transformers/
+semantic-witty-ai-assistant/
 ├── app/
-│   └── chatbot.py                  # Chat loop with similarity search
+│   ├── text_chatbot.py          # Text-based chatbot
+│   └── voice_chatbot.py         # Voice-enabled chatbot
 ├── model/
-│   └── build_vector_store.py      # Embeds prompts and builds vector store
-├── data/
-│   └── responses_witty_500.json   # 500+ conversational examples
+│   └── build_vector_store.py    # Create semantic vector store
 ├── utils/
-│   └── vector_store.pkl           # Pickled embeddings and responses
-├── assets/
-│   └── semantic-chat-output.png   # Screenshot for README
+│   ├── chat_core.py             # Core chat orchestration
+│   ├── feedback.py              # Feedback capture module
+│   ├── streaming.py             # Streaming replies
+│   └── vector_store.pkl         # Precomputed embeddings
+├── data/
+│   └── responses.json           # Witty/motivational response dataset
+├── feedback/
+│   └── feedback_log.csv         # User feedback log
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🖥️ Run It Locally
+## 🛤️ Architecture
+
+- **The flow of the Semantic Witty AI Assistant:**
+
+  <img src="./assets/architecture.png" alt="Architecture" width="400" />
+
+---
+
+## 🚀 Run It Locally
 
 ### 1. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Build vector store (if needed)
+### 2. Build the Vector Store (First Time Only)
 ```bash
 python model/build_vector_store.py
 ```
 
-### 3. Start the chatbot
+### 3. Start the Chatbot
+
+- **Text Chatbot:**
 ```bash
-python app/chatbot.py
+python app/text_chatbot.py
 ```
 
-Then just type like you would to a human:
-```
-> Hey, you there?
-> What’s your favorite meme?
-> Insult me, gently
-> Drop a weird fact
+- **Voice Chatbot:**
+```bash
+python app/voice_chatbot.py
 ```
 
----
-
-## 💬 Sample Interaction
-
-![Sample Output](./assets/semantic-chat-output.png)
-
-> ⚠️ This bot will occasionally roast you. With love. And sarcasm.
-
----
-
-## 🚀 What's Next
-- Swap `responses.json` for a vector database (FAISS / ChromaDB)
-- Add memory to track previous messages
-- API-ready wrapper using FastAPI
-- Deploy as a fun Slackbot or Telegram bot
+Then, chat or speak freely:
+```
+> Tell me something weird
+> Motivate me
+> Roast me, gently
+> Give me a fun fact
+```
 
 ---
 
-## ✨ What This Project Shows
-- Your progression from classic NLP to semantic retrieval
-- Comfort with embeddings, vector stores, and cosine similarity
-- Ability to blend ML + humor for a memorable UX
-- And most importantly — personality matters in AI 😎
+## 📈 Future Upgrades
+
+- Add memory (track previous user messages)
+- Expand voice support (more natural language understanding)
+- Replace file-based vector store with scalable FAISS/ChromaDB
+- Deploy as a Slackbot, Telegram Bot, or web app (FastAPI integration)
 
 ---
 
-## 👨‍💻 Author
-**Raviteja Kunapareddy**  
-[GitHub](https://github.com/RaviKunapareddy) ・ [LinkedIn](https://www.linkedin.com/in/ravitejak99/) ・ [Email](mailto:ravitejakunapareddy09@gmail.com)
+## 📬 Contact Me
 
-Let’s build assistants that don’t just *work* — but spark joy ⚡
+If you found this project useful, inspiring, or have any questions — feel free to connect!
+
+- 🧑‍💼 **Raviteja Kunapareddy**
+- 📧 Email: [ravitejakunapareddy09@gmail.com](mailto:ravitejakunapareddy09@gmail.com)
+- 🌐 LinkedIn: [linkedin.com/in/ravi-kunapareddy](https://www.linkedin.com/in/ravi-kunapareddy/)
+- 💼 Portfolio: [github.com/RaviKunapareddy/RaviKunapareddy](https://github.com/RaviKunapareddy/RaviKunapareddy)
+
+*Let’s build smarter systems together — one intelligent agent at a time.* 🚀
+

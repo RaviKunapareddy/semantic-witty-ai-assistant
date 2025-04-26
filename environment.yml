@@ -1,0 +1,16 @@
+name: witty-voice-chatbot
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - pip:
+      - openai-whisper
+      - pyttsx3
+      - sounddevice
+      - sentence-transformers==2.2.2
+      - tqdm
+      - scikit-learn

@@ -1,5 +1,6 @@
 sentence-transformers==2.2.2
-tensorflow==2.11.0
-keras==2.11.0
+# tensorflow==2.11.0
+# keras==2.11.0
 tqdm
 numpy
+huggingface_hub==0.10.1
